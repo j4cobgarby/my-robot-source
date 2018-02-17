@@ -1,3 +1,0 @@
-from funcs import *
-
-initmotors()

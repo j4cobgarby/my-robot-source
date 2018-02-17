@@ -7,6 +7,7 @@ import RPi.GPIO as GPIO
 from constants import *
 from websocket_server import WebsocketServer
 import time
+import atexit
 
 ##########
 #  GPIO  #
@@ -91,6 +92,12 @@ def message_received(client, server, message):
 	elif message == "motor2_hlt":
 		setmotor(2, False)
 
+def onexit():
+	GPIO.cleanup()
+	print("Server exited")
+
+atexit.register(onexit)
+
 def serve():
 	serv = WebsocketServer(PORT, HOST)
 	serv.set_fn_new_client(new_client)
@@ -101,6 +108,10 @@ def serve():
 
 if __name__ == "__main__":
 	initgpio()
+	print("[LOG] GPIO Initialised")
 	initmotors()
+	print("[LOG] Motors set up")
 	initleds()
+	print("[LOG] LEDs set up")
 	serve()
+	print("[WEBSOCKET] Server running, waiting for connections...")
