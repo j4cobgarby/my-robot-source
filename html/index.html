@@ -1,0 +1,38 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Mission Control</title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	<script type="text/javascript" src="control.js">
+	</script>
+</head>
+<body onload="init(); initkbd();">
+	<h1>Mission Control</h1>
+	<hr>
+	<h2>Tests</h2>
+	<button onclick="ws.send('led_test')">Flash LED</button>
+	<button onclick="ws.send('motors_test')">Test motors</button>
+	<hr/>
+	<h2>Left motor</h2>
+	<button onclick="ws.send('motor2_fd')">Left forwards</button>
+	<button onclick="ws.send('motor2_bk')">Left backwards</button>
+	<button onclick="ws.send('motor2_hlt')">Left stop</button>
+	<hr/>
+	<h2>Right motor</h2>
+	<button onclick="ws.send('motor1_fd')">Right forwards</button>
+	<button onclick="ws.send('motor1_bk')">Right backwards</button>
+	<button onclick="ws.send('motor1_hlt')">Right stop</button>
+	<hr/>
+	<h3>Or, use arrow keys to move</h3>
+	Virtual arrow keys, optimised for phone use
+	<center class="arrowkeys" onmousedown="set_appropriate_motion();">
+		<button id="up" onmousedown="u_down=true;d_down=false;l_down=false;r_down=false;">&uarr;</button>
+		<br>
+		<button id="left" onmousedown="u_down=false;d_down=false;l_down=true;r_down=false;">&larr;</button><!--
+		--><button id="stop" onmousedown="u_down=false;d_down=false;l_down=false;r_down=false;">+</button><!--
+		--><button id="right" onmousedown="u_down=false;d_down=false;l_down=false;r_down=true;">&rarr;</button>
+		<br>
+		<button id="down" onmousedown="u_down=false;d_down=true;l_down=false;r_down=false;">&darr;</button>
+	</center>
+</body>
+</html>
