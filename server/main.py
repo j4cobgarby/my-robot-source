@@ -9,6 +9,23 @@ from websocket_server import WebsocketServer
 import time
 import atexit
 
+def print_at_lns_up(n, st, col=37):
+	print("\033[" + str(n) + "F", end="", flush=True)
+	print("\033[" + str(col) + ";1m" + (" "*40) + "\r" + st + "\033[0m", end="", flush=True)
+	print("\033[" + str(n) + "E", end="", flush=True)
+
+command_expands = {
+	"fd": "Forwards",
+	"bk": "Backwards",
+	"hlt": "Stationary"
+}
+
+command_colours = {
+	"fd":  35,
+	"bk":  33,
+	"hlt": 31
+}
+
 ##########
 #  GPIO  #
 ##########
@@ -48,14 +65,32 @@ def setled(state):
 ##########
 
 def new_client(client, server):
-	print("New client connected!")
-
+	print_at_lns_up(1, "A client connected", 34)
+	pass
 def client_left(client, server):
-	print("Client left! :(")
-
+	print_at_lns_up(1, "A client left!", 31)
+	pass
 def message_received(client, server, message):
-	print("Client told us something!\n\tmessage: " + message)
-
+	lines_up = 0
+	display = ""
+	colour = 37
+	pieces = message.split("_")
+	if pieces[0] == "motor1":
+		lines_up = 3
+		display = command_expands[pieces[1]]
+		colour = command_colours[pieces[1]]
+	elif pieces[0] == "motor2":
+		lines_up = 5
+		display = command_expands[pieces[1]]
+		colour = command_colours[pieces[1]]
+	else:
+		if message ==  "led_test":
+			lines_up = 1
+			display = "Testing LED"
+		if message == "motors_test":
+			lines_up = 1
+			display = "Testing motors"
+	print_at_lns_up(lines_up, display, colour)
 	if message == "led_test":
 		for i in range(5):
 			GPIO.output(LED1, GPIO.HIGH)
@@ -104,6 +139,11 @@ def serve():
 	serv.set_fn_client_left(client_left)
 	serv.set_fn_message_received(message_received)
 
+	print("\033[35m\033[1m== Latest instructions from web client ==\033[0m\n")
+	print("= Left motor =\n\n= Right motor =\n\n= Other =\n")
+
+	#print("\033[4AHello!", end="", flush=True)
+	#print_at_lns_up(4, "Hello!")
 	serv.run_forever()
 
 if __name__ == "__main__":

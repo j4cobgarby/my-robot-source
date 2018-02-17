@@ -5,9 +5,15 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	<script type="text/javascript" src="control.js">
 	</script>
+	<script type="text/javascript">
+		function display_ip() {
+			document.getElementById("url").innerHTML = window.location.hostname;
+		}
+	</script>
 </head>
-<body onload="init(); initkbd();">
+<body onload="init(); initkbd(); display_ip();">
 	<h1>Mission Control</h1>
+	<h3 id="url"></h3>
 	<hr>
 	<h2>Tests</h2>
 	<button onclick="ws.send('led_test')">Flash LED</button>

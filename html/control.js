@@ -5,7 +5,9 @@ var r_down = false;
 var d_down = false;
 
 function init() {
-    ws = new WebSocket("ws://192.168.0.57:1337/");
+    var hostname = window.location.hostname;
+    ws = new WebSocket("ws://" + hostname + ":1337/");
+    console.log("ws://" + hostname + ":1337/");
 
     ws.onoopen = function() {
         // on open conn
@@ -49,7 +51,7 @@ function set_appropriate_motion() {
     }
 }
 
-function initkbd() {		
+function initkbd() {
     document.body.onkeydown = function(e) {
         if (e.keyCode == 37) l_down = true;
         if (e.keyCode == 38) u_down = true;
