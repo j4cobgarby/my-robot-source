@@ -113,5 +113,5 @@ if __name__ == "__main__":
 	print("[LOG] Motors set up")
 	initleds()
 	print("[LOG] LEDs set up")
-	serve()
 	print("[WEBSOCKET] Server running, waiting for connections...")
+	serve()
